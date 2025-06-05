@@ -2,10 +2,12 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -26,6 +28,10 @@ const Login: React.FC = () => {
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -65,16 +71,29 @@ const Login: React.FC = () => {
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Password
                             </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700"
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={handlePasswordChange}
-                            />
+                            <div className="relative">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    required
+                                    className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700 pr-12"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-150"
+                                >
+                                    {showPassword ? (
+                                        <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                                    ) : (
+                                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
 

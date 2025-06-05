@@ -2,6 +2,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 interface RegisterFormData {
     name: string;
@@ -17,6 +18,8 @@ const Register: React.FC = () => {
         password: '',
         confirmPassword: ''
     });
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const { register } = useAuth();
     const navigate = useNavigate();
@@ -44,6 +47,14 @@ const Register: React.FC = () => {
         } catch (error: any) {
             setError(error.response?.data?.message || 'An error occurred');
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
     return (
@@ -98,31 +109,57 @@ const Register: React.FC = () => {
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Password
                             </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700"
-                                placeholder="Create a password"
-                                value={formData.password}
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    required
+                                    className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700 pr-12"
+                                    placeholder="Create a password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={togglePasswordVisibility}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-150"
+                                >
+                                    {showPassword ? (
+                                        <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                                    ) : (
+                                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Confirm Password
                             </label>
-                            <input
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                required
-                                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700"
-                                placeholder="Confirm your password"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                            />
+                            <div className="relative">
+                                <input
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    required
+                                    className="appearance-none relative block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out dark:bg-gray-700 pr-12"
+                                    placeholder="Confirm your password"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-150"
+                                >
+                                    {showConfirmPassword ? (
+                                        <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
+                                    ) : (
+                                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
