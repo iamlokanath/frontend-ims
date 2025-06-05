@@ -23,6 +23,8 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const checkUser = async () => {
         try {
-            const response = await axios.get<User>('http://localhost:5000/api/auth/me');
+            const response = await axios.get<User>(`${API_URL}/api/auth/me`);
             setUser(response.data);
         } catch (error) {
             localStorage.removeItem('token');
@@ -50,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     const login = async (email: string, password: string): Promise<User> => {
-        const response = await axios.post<{ token: string } & User>('http://localhost:5000/api/auth/login', {
+        const response = await axios.post<{ token: string } & User>(`${API_URL}/api/auth/login`, {
             email,
             password
         });
@@ -62,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     const register = async (userData: any): Promise<User> => { // TODO: Define specific type for userData
-        const response = await axios.post<{ token: string } & User>('http://localhost:5000/api/auth/register', userData);
+        const response = await axios.post<{ token: string } & User>(`${API_URL}/api/auth/register`, userData);
         const { token, ...user } = response.data;
         localStorage.setItem('token', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
