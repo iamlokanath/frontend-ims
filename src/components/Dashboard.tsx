@@ -28,6 +28,8 @@ interface UploadData {
     image: File | null;
 }
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Dashboard: React.FC = () => {
     const { user } = useAuth();
     const [images, setImages] = useState<Image[]>([]);
@@ -47,7 +49,7 @@ const Dashboard: React.FC = () => {
         if (!user) return; // Ensure user is available before fetching
         try {
             const endpoint = user.role === 'user' ? '/my-images' : '/all';
-            const response = await axios.get<Image[]>(`http://localhost:5000/api/images${endpoint}`);
+            const response = await axios.get<Image[]>(`${API_URL}/api/images${endpoint}`);
             setImages(response.data);
         } catch (error) {
             setError('Failed to fetch images');
@@ -90,7 +92,7 @@ const Dashboard: React.FC = () => {
             formData.append('title', uploadData.title);
             formData.append('description', uploadData.description);
 
-            await axios.post('http://localhost:5000/api/images', formData, {
+            await axios.post(`${API_URL}/api/images`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -125,7 +127,7 @@ const Dashboard: React.FC = () => {
         setError('');
 
         try {
-            await axios.delete(`http://localhost:5000/api/images/${imageToDeleteId}`);
+            await axios.delete(`${API_URL}/api/images/${imageToDeleteId}`);
             fetchImages(); // Refresh images after deletion
             closeConfirmationModal(); // Close the modal on success
         } catch (error) {
@@ -214,7 +216,7 @@ const Dashboard: React.FC = () => {
                                 onClick={() => openImageModal(image)} // Open image modal on click
                             >
                                 <img
-                                    src={`http://localhost:5000${image.imageUrl}`}
+                                    src={`${API_URL}${image.imageUrl}`}
                                     alt={image.title}
                                     className="w-full h-48 object-cover"
                                 />
