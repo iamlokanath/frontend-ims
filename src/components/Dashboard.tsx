@@ -117,50 +117,50 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
             <div className="space-y-8">
                 {/* Upload Form */}
                 {user?.role !== 'super_admin' && ( // Only show upload for non-super-admins if needed, adjust based on requirements
-                    <div className="bg-white shadow rounded-lg p-6">
-                        <h2 className="text-2xl font-bold mb-4">Upload Image</h2>
+                    <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Upload Image</h2>
                         <form onSubmit={handleUpload} className="space-y-4">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                                <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
                                 <input
                                     type="text"
                                     id="title"
                                     name="title"
                                     value={uploadData.title}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
                                     required
                                 />
                             </div>
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                                 <textarea
                                     id="description"
                                     name="description"
                                     value={uploadData.description}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
                                     rows={3}
                                 />
                             </div>
                             <div>
-                                <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image</label>
+                                <label htmlFor="image" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
                                 <input
                                     type="file"
                                     id="image"
                                     onChange={handleFileChange}
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full dark:text-gray-300"
                                     accept="image/*"
                                     required
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
                             >
                                 Upload
                             </button>
@@ -169,38 +169,38 @@ const Dashboard: React.FC = () => {
                 )}
 
                 {/* Image Grid */}
-                <div className="bg-white shadow rounded-lg p-6">
-                    <h2 className="text-2xl font-bold mb-4">Images</h2>
+                <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Images</h2>
                     {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 dark:bg-red-900 dark:text-red-200 dark:border-red-700">
                             {error}
                         </div>
                     )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {images.map((image) => (
-                            <div key={image._id} className="relative group">
+                            <div key={image._id} className="relative group bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                                 <img
                                     src={`http://localhost:5000${image.imageUrl}`}
                                     alt={image.title}
-                                    className="w-full h-48 object-cover rounded-lg"
+                                    className="w-full h-48 object-cover"
                                 />
                                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded-lg">
                                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                         {user?.role === 'super_admin' && (
                                             <button
                                                 onClick={() => handleDelete(image._id)}
-                                                className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600"
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800"
                                             >
                                                 Delete
                                             </button>
                                         )}
                                     </div>
                                 </div>
-                                <div className="mt-2">
-                                    <h3 className="text-lg font-medium">{image.title}</h3>
-                                    <p className="text-sm text-gray-500">{image.description}</p>
+                                <div className="mt-2 p-4">
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">{image.title}</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">{image.description}</p>
                                     {(user?.role === 'admin' || user?.role === 'super_admin') && (
-                                        <p className="text-xs text-gray-400 mt-1">
+                                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                                             Uploaded by: {'user' in image && image.user ? (image.user as User).name : 'Unknown'}
                                         </p>
                                     )}
